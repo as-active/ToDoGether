@@ -5,21 +5,28 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.database.DataSetObserver;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     private AddTDList mAddListTask;
 
     private View mProgressView;
-    private View mMainFormView;
+    private ListView mAllToDoListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,17 +35,33 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //String[] DummyArray = {"Camping","Shopping on Weekend", "Films"};
+
+        ArrayAdapter<CharSequence> mAllToDoListAdpt = ArrayAdapter.createFromResource(this, R.array.ListDummy_array, R.layout.tdlist_textview_main);
+
+        mAllToDoListView = (ListView)findViewById(R.id.AllToDoListView);
+        mAllToDoListView.setAdapter(mAllToDoListAdpt);
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //Start a Background Activity to add a new TD List Item
-
+                attemptAddTDList();
             }
         });
 
-        mProgressView = findViewById(R.id.login_progress);
-        mMainFormView = findViewById(R.id.login_form);
+        mProgressView = findViewById(R.id.AddList_progress);
+    }
+
+    public void attemptAddTDList() {
+        if (mAddListTask != null) {
+            return;
+        }
+
+        showProgress(true);
+        mAddListTask = new AddTDList(getApplicationContext());
+        mAddListTask.execute((Void) null);
     }
 
     /**
@@ -52,12 +75,12 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
             int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            mMainFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mMainFormView.animate().setDuration(shortAnimTime).alpha(
+            mAllToDoListView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mAllToDoListView.animate().setDuration(shortAnimTime).alpha(
                     show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mMainFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    mAllToDoListView.setVisibility(show ? View.GONE : View.VISIBLE);
                 }
             });
 
@@ -73,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mMainFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+            mAllToDoListView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -93,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             //TODO Read Data DB an show in ListView
 
+
             return true;
         }
 
@@ -100,12 +124,6 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(final Boolean success) {
             mAddListTask = null;
             showProgress(false);
-
-            if (success) {
-                Intent intent = new Intent(context, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
         }
 
         @Override

@@ -16,4 +16,8 @@
 
     <!-- Strings related to todo List Overview -->
     <string name="title_activity_main">Übersicht ToDo Listen</string>
+    <string-array name="ListDummy_array">
+        <item>One</item>
+        <item>Two</item>
+    </string-array>
 </resources>
