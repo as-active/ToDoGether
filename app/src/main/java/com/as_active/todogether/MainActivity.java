@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private View mProgressView;
     private ListView mAllToDoListView;
 
+
+    String[] listContent = {"Oans", "Zwoa", "Gsuffa"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,12 +38,9 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //String[] DummyArray = {"Camping","Shopping on Weekend", "Films"};
-
-        ArrayAdapter<CharSequence> mAllToDoListAdpt = ArrayAdapter.createFromResource(this, R.array.ListDummy_array, R.layout.tdlist_textview_main);
 
         mAllToDoListView = (ListView)findViewById(R.id.AllToDoListView);
-        mAllToDoListView.setAdapter(mAllToDoListAdpt);
+        mAllToDoListView.setAdapter(new ArrayAdapter<String>(this,R.layout.list_main,R.id.url,listContent));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Start a Background Activity to add a new TD List Item
                 attemptAddTDList();
+
             }
         });
 
@@ -116,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
         protected Boolean doInBackground(Void... params) {
             //TODO Read Data DB an show in ListView
 
+            int lastC = (listContent.length - 1);
+            listContent[lastC] = "Oida!";
 
             return true;
         }

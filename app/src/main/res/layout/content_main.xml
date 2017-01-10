@@ -13,4 +13,12 @@
     tools:context="com.as_active.todogether.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <ListView
+        android:id = "@+id/AllToDoListView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="false" >
+
+    </ListView>
+
 </RelativeLayout>

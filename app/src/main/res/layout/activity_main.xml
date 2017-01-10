@@ -21,6 +21,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <include layout="@layout/content_main"/>
+
     <ProgressBar
         android:id="@+id/AddList_progress"
         style="?android:attr/progressBarStyleLarge"
@@ -29,7 +31,7 @@
         android:layout_marginBottom="8dp"
         android:visibility="gone" />
 
-    <include layout="@layout/tdlist_textview_main" />
+
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

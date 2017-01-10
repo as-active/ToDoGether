@@ -315,7 +315,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             try {
                 // Simulate network access.
-                Thread.sleep(2000);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 return false;
             }
@@ -334,10 +334,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
         @Override
         protected void onPostExecute(final Boolean success) {
+
             mAuthTask = null;
             showProgress(false);
 
             if (success) {
+
+                // write logon time to database
+
                 Intent intent = new Intent(context, MainActivity.class);
                 startActivity(intent);
                 finish();
